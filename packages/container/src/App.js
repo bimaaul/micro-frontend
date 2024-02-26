@@ -4,6 +4,7 @@ import { StylesProvider, createGenerateClassName } from "@material-ui/core"
 
 import Header from "./components/Header"
 import ProgressBar from "./components/ProgressBar"
+import AuthContextProvider, { useAuth } from "./components/AuthProvider"
 
 const MarketingLazy = lazy(() => import("./components/MarketingApp"))
 const AuthLazy = lazy(() => import("./components/AuthApp"))
@@ -14,7 +15,7 @@ const generateClassName = createGenerateClassName({
 
 export default () => {
   return (
-    <StylesProvider generateClassName={generateClassName}>
+    <Providers>
       <BrowserRouter>
         <Header />
         <Suspense fallback={<ProgressBar />}>
@@ -24,6 +25,14 @@ export default () => {
           </Switch>
         </Suspense>
       </BrowserRouter>
+    </Providers>
+  )
+}
+
+const Providers = ({ children }) => {
+  return (
+    <StylesProvider generateClassName={generateClassName}>
+      <AuthContextProvider>{children}</AuthContextProvider>
     </StylesProvider>
   )
 }
